@@ -1,0 +1,49 @@
+.sidebar-container {
+  padding-top: 20px;
+  padding-left: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  border-right: 1px solid black;
+  width: 250px;
+  height: 100vh;
+  color: white;
+  position: fixed;
+  background-color: #212121;
+}
+
+.current-avatar {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 20px;
+  border: 2px solid black;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.current-avatar div {
+  padding-top: 5px;
+  border-radius: 8px;
+}
+
+.current-avatar img {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.sidebar-menu {
+  font-size: 20px;
+  list-style: none;
+  background-color: inherit;
+}
+
+.sidebar-menu li {
+  margin-bottom: 10px;
+  background-color: inherit;
+}
+
+.linkto {
+  background-color: inherit;
+}

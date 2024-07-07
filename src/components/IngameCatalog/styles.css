@@ -1,0 +1,44 @@
+.catalog-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.catalog-title {
+  color: white;
+  margin-bottom: 20px;
+  margin-left: 15px;
+}
+
+.avatar-block {
+  border: 2px solid #EA4C89;
+  border-radius: 8px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 18px;
+}
+
+.avatar-block p {
+  background-color: #EA4C89;
+  color: white;
+}
+
+.avatar-block img {
+  width: 256px;
+  height: 192px;
+}
+
+.avatar-buttons {
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 5px;
+}
+
+.avatar-btn {
+  width: 120px;
+}
+
+.dummy {
+  width: 294px;
+}

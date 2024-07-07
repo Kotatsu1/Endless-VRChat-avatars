@@ -1,0 +1,11 @@
+.avatar-panel-container {
+  margin-bottom: 30px;
+  margin-left: 15px;
+  display: flex;
+  gap: 20px;
+}
+
+.avtr-input {
+  height: 35px;
+  width: 400px;
+}

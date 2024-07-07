@@ -1,0 +1,36 @@
+.login-container {
+  margin: 0 auto;
+  margin-top: 200px;
+  height: 600px;
+  width: 400px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #e4e4e4;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  color: #EA4C89;
+  background-color: inherit;
+}
+.input-field {
+  position: relative;
+  border-bottom: 2px solid #ccc;
+  margin: 15px 0;
+  background-color: inherit;
+}
+.input-field input {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: gray;
+
+}
