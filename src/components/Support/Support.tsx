@@ -1,5 +1,5 @@
 import "./styles.css"
-import { useState, useEffect } from "react";
+
 
 
 const Support = () => {

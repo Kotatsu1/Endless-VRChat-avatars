@@ -19,7 +19,7 @@
     },
     "windows": [
       {
-        "title": "vrc-avatar-changer",
+        "title": "Endless VRChat Avatars",
         "width": 800,
         "height": 600
       }
@@ -30,7 +30,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "com.kotatsu.vrc-avatar-changer",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

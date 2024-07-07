@@ -1,6 +1,6 @@
 import "./styles.css"
 import { invoke } from "@tauri-apps/api/tauri";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { RootState } from "@/redux"
 import { useSelector } from "react-redux"
@@ -12,13 +12,13 @@ const AvatarPanel = () => {
 
   const addAvatar = async (avtr: string) => {
     try {
-      const rawAvatarInfo = await invoke('get_avatar_info', { avtr })
+      const rawAvatarInfo: string = await invoke('get_avatar_info', { avtr })
       const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 
       const title = parsedAvatarInfo.name;
-      const thumbnail = parsedAvatarInfo.thumbnailImageUrl;
+      const thumbnailUrl = parsedAvatarInfo.thumbnailImageUrl;
 
-      await invoke('add_avatar_cmd', { avtr, title, thumbnail });
+      await invoke('add_avatar_cmd', { avtr, title, thumbnailUrl });
       console.log('Avatar added successfully');
     } catch (error) {
       console.error('Failed to add avatar:', error);
@@ -27,7 +27,7 @@ const AvatarPanel = () => {
 
   const addCurrentAvatar = async () => {
     try {
-      const rawAvatarInfo = await invoke("get_current_avatar", { userId });
+      const rawAvatarInfo: string = await invoke("get_current_avatar", { userId });
       const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 
       await addAvatar(parsedAvatarInfo.id)

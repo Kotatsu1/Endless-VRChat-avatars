@@ -14,8 +14,9 @@ tauri-build = { version = "1", features = [] }
 tauri = { version = "1", features = ["shell-open"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+dirs = "3.0"
 reqwest = { version = "0.11", features = ["json", "cookies"] }
-rusqlite = "0.28.0"
+rusqlite = { version = "0.28.0", features = ["bundled"] }
 tokio = { version = "1", features = ["full"] }
 
 [features]

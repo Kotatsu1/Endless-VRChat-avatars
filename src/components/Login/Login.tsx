@@ -1,9 +1,8 @@
 import "./styles.css"
 import { invoke } from "@tauri-apps/api/tauri";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { encodeCredentials } from "@/utils/encoder" 
-import { RootState } from "@/redux"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { authActions } from "@/redux"
 
 const Login = () => {
@@ -13,7 +12,7 @@ const Login = () => {
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
   const [twoFactorCode, setTwoFactorCode] = useState("");
 
-  const authState = useSelector((state: RootState) => state.auth.isAuth)
+ 
   const dispatch = useDispatch()
 
   const setAuthState = () => {
@@ -22,7 +21,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (twoFactorRequired) {
-      const verify = await invoke("verify_two_factor", { code: twoFactorCode, authCookie })
+      const verify: string[] = await invoke("verify_two_factor", { code: twoFactorCode, authCookie })
       const completeCookie = `${verify[0]}; ${authCookie}`
       if (completeCookie.length > 300) {
         await invoke("update_auth_cookie_cmd", { authCookie: completeCookie })
@@ -32,7 +31,7 @@ const Login = () => {
       }
     }
     const authString = encodeCredentials(login, password)
-    const res = await invoke("login", { authString })
+    const res: [string, string[]] = await invoke("login", { authString })
 
     const cookie = res[1]
     if (cookie) {

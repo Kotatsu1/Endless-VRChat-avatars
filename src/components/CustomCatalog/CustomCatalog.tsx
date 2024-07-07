@@ -1,5 +1,5 @@
 import "./styles.css"
-import Avatar from "@/types"
+import type { Avatar } from "@/types"
 import { AvatarPanel } from "../AvatarPanel/AvatarPanel"
 import { invoke } from "@tauri-apps/api/tauri";
 import { useState, useEffect } from 'react';
@@ -7,11 +7,11 @@ import { listen } from '@tauri-apps/api/event'
 
 
 const CustomCatalog = () => {
-  const [avatars, setAvatars] = useState([])
+  const [avatars, setAvatars] = useState<Avatar[]>([]);
 
   const getAllCustomAvatars = async () => {
     try {
-      const items = await invoke('get_all_avatars_cmd');
+      const items: Avatar[] = await invoke('get_all_avatars_cmd');
       setAvatars(items)
     } catch (error) {
       console.error('Failed to get items:', error);
@@ -62,7 +62,7 @@ const CustomCatalog = () => {
           >
             <p>{avatar.title}</p>
             <p>[rank]</p>
-            <img src={avatar.thumbnail} />
+            <img src={avatar.thumbnailUrl} />
             <div className="avatar-buttons">
               <button className="btn avatar-btn" onClick={() => changeAvatar(avatar.avtr)}>
                 Select

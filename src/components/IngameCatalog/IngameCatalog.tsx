@@ -1,15 +1,15 @@
 import "./styles.css"
-import Avatar from "@/types"
+import type { AvatarSite } from "@/types"
 import { invoke } from "@tauri-apps/api/tauri";
 import { useState, useEffect } from 'react';
 
 
 const IngameCatalog = () => {
-  const [avatars, setAvatars] = useState([])
+  const [avatars, setAvatars] = useState<AvatarSite[]>([]);
 
   const getFavoriteAvatars = async () => {
-    const avatars = await invoke("get_favorite_avatars")
-    const parsedAvatars = JSON.parse(avatars)
+    const avatars: string = await invoke("get_favorite_avatars")
+    const parsedAvatars: AvatarSite[] = JSON.parse(avatars)
     setAvatars(parsedAvatars)
   }
 

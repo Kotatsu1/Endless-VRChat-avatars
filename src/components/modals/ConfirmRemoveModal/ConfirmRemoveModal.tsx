@@ -1,7 +1,4 @@
 import "./styles.css"
-import { invoke } from "@tauri-apps/api/tauri";
-
-
 
 
 const ConfirmRemoveModal = () => {
@@ -16,3 +13,5 @@ const ConfirmRemoveModal = () => {
   </>
   )
 }
+
+export { ConfirmRemoveModal }

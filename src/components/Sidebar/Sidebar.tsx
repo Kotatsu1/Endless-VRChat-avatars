@@ -14,7 +14,7 @@ const Sidebar = () => {
   const [avatarTitle, setAvatarTitle] = useState("");
 
   const getAvatarInfo = async (userId: string) => {
-    const rawAvatarInfo = await invoke("get_current_avatar", { userId });
+    const rawAvatarInfo: string = await invoke("get_current_avatar", { userId });
     const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 
     setAvatarThumbnail(parsedAvatarInfo.thumbnailImageUrl)
