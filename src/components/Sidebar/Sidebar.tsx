@@ -7,13 +7,18 @@ import { useSelector } from "react-redux"
 import { listen } from '@tauri-apps/api/event'
 
 
+
 const Sidebar = () => {
-  const userId = useSelector((state: RootState) => state.user.userId)
+  const userInfo = useSelector((state: RootState) => state.user.info)
+
 
   const [avatarThumbnail, setAvatarThumbnail] = useState("");
   const [avatarTitle, setAvatarTitle] = useState("");
 
+
+
   const getAvatarInfo = async (userId: string) => {
+    console.log("HERE", userId)
     const rawAvatarInfo: string = await invoke("get_current_avatar", { userId });
     const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 
@@ -22,12 +27,11 @@ const Sidebar = () => {
   }
 
   useEffect(() => {
-    getAvatarInfo(userId)
-
+    getAvatarInfo(userInfo.id)
     const setupListener = async () => {
-      const unlisten = await listen('avatar_changed', (event) => {
+      const unlisten = await listen('avatar_changed', async (event) => {
         console.log('Avatar added event received:', event);
-        getAvatarInfo(userId)
+        await getAvatarInfo(userInfo.id)
       });
 
       return () => {
@@ -51,6 +55,9 @@ const Sidebar = () => {
           </li>
           <li>
             <Link to="/ingame" className="linkto">In Game Catalog</Link>
+          </li>
+          <li>
+            <Link to="/search" className="linkto">Search Avatars</Link>
           </li>
           <li>
             <Link to="/support" className="linkto">Support</Link>

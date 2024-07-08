@@ -1,21 +1,26 @@
 import "./styles.css"
-import type { AvatarSite } from "@/types"
+import type { SiteAvatar } from "@/types"
 import { invoke } from "@tauri-apps/api/tauri";
 import { useState, useEffect } from 'react';
 
 
 const IngameCatalog = () => {
-  const [avatars, setAvatars] = useState<AvatarSite[]>([]);
+  const [avatars, setAvatars] = useState<SiteAvatar[]>([]);
 
   const getFavoriteAvatars = async () => {
     const avatars: string = await invoke("get_favorite_avatars")
-    const parsedAvatars: AvatarSite[] = JSON.parse(avatars)
+    const parsedAvatars: SiteAvatar[] = JSON.parse(avatars)
     setAvatars(parsedAvatars)
   }
 
   const changeAvatar = async (avatarId: string) => {
     const res = await invoke("change_avatar", { avatarId });
     console.log("avtr change", res)
+  };
+
+  const addToCustomAvatars = async (avtr: string, title: string, thumbnailUrl: string) => {
+    const res = await invoke("add_avatar_cmd", { avtr, title, thumbnailUrl });
+    console.log("avtr to custom", res)
   };
 
   useEffect(() => {
@@ -32,18 +37,27 @@ const IngameCatalog = () => {
             className="avatar-block"
           >
             <p>{avatar.name}</p>
-            <p>[rank]</p>
             <img src={avatar.thumbnailImageUrl} />
             <div className="avatar-buttons">
               <button className="btn avatar-btn" onClick={() => changeAvatar(avatar.id)}>
                 Select
               </button>
+              <button className="btn avatar-btn" onClick={() => addToCustomAvatars(avatar.id, avatar.name, avatar.thumbnailImageUrl)}>
+                To Custom
+              </button>
             </div>
           </div>
         ))}
-          <div className="dummy" />
-          <div className="dummy" />
-          <div className="dummy" />
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
       </div>
     </>
   )

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 
 const AvatarPanel = () => {
   const [avtr, setAvtr] = useState('');
-  const userId = useSelector((state: RootState) => state.user.userId)
+  const userInfo = useSelector((state: RootState) => state.user.info)
 
   const addAvatar = async (avtr: string) => {
     try {
@@ -27,7 +27,7 @@ const AvatarPanel = () => {
 
   const addCurrentAvatar = async () => {
     try {
-      const rawAvatarInfo: string = await invoke("get_current_avatar", { userId });
+      const rawAvatarInfo: string = await invoke("get_current_avatar", { userId: userInfo.id });
       const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 
       await addAvatar(parsedAvatarInfo.id)

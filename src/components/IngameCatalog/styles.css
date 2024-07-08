@@ -16,6 +16,7 @@
   margin: 0 auto;
   text-align: center;
   font-size: 18px;
+  width: 256px;
 }
 
 .avatar-block p {
@@ -24,7 +25,7 @@
 }
 
 .avatar-block img {
-  width: 256px;
+  width: 252px;
   height: 192px;
 }
 
@@ -40,5 +41,5 @@
 }
 
 .dummy {
-  width: 294px;
+  opacity: 0;;
 }

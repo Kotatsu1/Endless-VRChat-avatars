@@ -1,6 +1,5 @@
 use reqwest::Client;
 use reqwest::header::{HeaderMap, HeaderValue, COOKIE};
-use serde_json::Value; 
 use tauri::command;
 use super::cookie_headers::build_headers;
 use crate::db::get_auth_cookie_cmd;
@@ -29,7 +28,7 @@ pub async fn check_auth() -> Result<String, String> {
 
 
 #[command]
-pub async fn get_user_id() -> Result<String, String> {
+pub async fn get_user_info() -> Result<String, String> {
     let client = Client::new();
 
     let auth_cookie = match get_auth_cookie_cmd() {
@@ -46,10 +45,9 @@ pub async fn get_user_id() -> Result<String, String> {
         .map_err(|err| err.to_string())?;
 
     let body = response.text().await.unwrap_or_else(|_| String::from(""));
-    let json_data: Value = serde_json::from_str(&body).map_err(|err| err.to_string())?;
-    let user_id = json_data["id"].as_str().unwrap_or_default();
 
-    Ok(user_id.to_string())
+
+    Ok(body)
 }
 
 

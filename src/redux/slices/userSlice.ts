@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { User } from "@/types"
+
+
+
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
-      userId: "no user id",
+      info: {} as User,
   },
   reducers: {
-    setUserId(state, action) {
-      state.userId = action.payload;
+    setUserInfo(state, action) {
+      state.info = action.payload;
     }
   }
 })

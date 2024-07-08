@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Main, CustomCatalog, IngameCatalog, Support } from "./components"
+import { Main, CustomCatalog, IngameCatalog, SearchAvatars, Support } from "./components"
 
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
         <Route path="/" element={<Main />}>
           <Route path="/" element={<CustomCatalog />} />
           <Route path="/ingame" element={<IngameCatalog />} />
+          <Route path="/search" element={<SearchAvatars />} />
           <Route path="/support" element={<Support />} />
         </Route>
       </Routes>

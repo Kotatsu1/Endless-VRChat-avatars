@@ -43,3 +43,22 @@
 .dummy {
   opacity: 0;;
 }
+
+.search-query {
+  height: 35px;
+  width: 400px;
+}
+
+.input-container {
+  margin-bottom: 30px;
+  margin-left: 15px;
+}
+
+.pagination {
+  margin-top: 15px;
+  display: flex;
+}
+
+.pagination p {
+  font-size: 40px;
+}

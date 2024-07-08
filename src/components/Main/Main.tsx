@@ -16,16 +16,18 @@ const Main = () => {
     dispatch(authActions.setAuth())
   }
 
-  const setUserId = async () => {
-    const userId = await invoke("get_user_id")
-    dispatch(userActions.setUserId(userId))
+  const setUserInfo = async () => {
+    const rawUserInfo: string = await invoke("get_user_info")
+    const parsedUserInfo = JSON.parse(rawUserInfo)
+
+    dispatch(userActions.setUserInfo(parsedUserInfo))
   }
 
   const setAuth = async () => {
     const auth: string = await invoke("check_auth");
 
     if (!auth.includes("401")) {
-      await setUserId()
+      await setUserInfo();
       setAuthState();
     }
   }

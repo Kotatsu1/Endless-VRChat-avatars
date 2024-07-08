@@ -98,4 +98,25 @@ pub async fn get_avatar_info(avtr: String) -> Result<String, String> {
     Ok(body)
 }
 
+#[command]
+pub async fn search_avatars(search_query: String) -> Result<String, String> {
+    let client = Client::new();
+
+    let auth_cookie = match get_auth_cookie_cmd() {
+        Ok(Some(cookie)) => cookie,
+        _ => String::new(),
+    };
+    
+    let headers = build_headers(&auth_cookie);
+    let url = format!("https://avatarsearch.cc/Avatar/AvatarSearcher?name={}", search_query);
+    let response = client.get(&url)
+        .headers(headers)
+        .send()
+        .await
+        .map_err(|err| err.to_string())?;
+
+    let body = response.text().await.unwrap_or_else(|_| String::from(""));
+    Ok(body)
+}
+
 

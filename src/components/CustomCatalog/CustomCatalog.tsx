@@ -61,7 +61,6 @@ const CustomCatalog = () => {
             className="avatar-block"
           >
             <p>{avatar.title}</p>
-            <p>[rank]</p>
             <img src={avatar.thumbnailUrl} />
             <div className="avatar-buttons">
               <button className="btn avatar-btn" onClick={() => changeAvatar(avatar.avtr)}>
@@ -73,9 +72,16 @@ const CustomCatalog = () => {
             </div>
           </div>
         ))}
-          <div className="dummy" />
-          <div className="dummy" />
-          <div className="dummy" />
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
+        <div className="dummy avatar-block"></div>
       </div>
     </>
   )
