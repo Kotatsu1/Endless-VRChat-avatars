@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [authCookie, setAuthCookie] = useState("");
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
+  const [twoFactorMethod, setTwoFactorMethod] = useState("");
   const [twoFactorCode, setTwoFactorCode] = useState("");
 
  
@@ -21,7 +22,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (twoFactorRequired) {
-      const verify: string[] = await invoke("verify_two_factor", { code: twoFactorCode, authCookie })
+      const verify: string[] = await invoke("verify_two_factor", { code: twoFactorCode, authCookie, method: twoFactorMethod })
       const completeCookie = `${verify[0]}; ${authCookie}`
       if (completeCookie.length > 300) {
         await invoke("update_auth_cookie_cmd", { authCookie: completeCookie })
@@ -39,7 +40,9 @@ const Login = () => {
     }
     
     const parsedRes = JSON.parse(res[0]);
+
     if (parsedRes.requiresTwoFactorAuth) {
+      setTwoFactorMethod(parsedRes.requiresTwoFactorAuth[0]);
       setTwoFactorRequired(true);
     }
   }
@@ -68,7 +71,7 @@ const Login = () => {
           <div className="input-field">
             <input
               type="text"
-              placeholder="email code"
+              placeholder="two factor code"
               value={twoFactorCode}
               onChange={(e) => setTwoFactorCode(e.target.value)}
             />

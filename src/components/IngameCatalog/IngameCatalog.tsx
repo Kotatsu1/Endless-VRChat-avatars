@@ -20,7 +20,13 @@ const IngameCatalog = () => {
     const avatars: string = await invoke("get_favorite_avatars", { category: category })
     const parsedAvatars: SiteAvatar[] = JSON.parse(avatars)
 
-    console.log(parsedAvatars)
+    setAvatars(parsedAvatars)
+  }
+
+  const getUploadedAvatars = async () => {
+    const avatars: string = await invoke("get_uploaded_avatars")
+    const parsedAvatars: SiteAvatar[] = JSON.parse(avatars)
+
     setAvatars(parsedAvatars)
   }
 
@@ -54,6 +60,7 @@ const IngameCatalog = () => {
         <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars4")}>4</div>
         <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars5")}>5</div>
         <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars6")}>6</div>
+        <div className="favorites-category" onClick={() => getUploadedAvatars()}>Uploaded</div>
       </div>
       <div className="input-container">
           <input

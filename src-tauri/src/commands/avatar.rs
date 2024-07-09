@@ -67,6 +67,22 @@ pub async fn get_favorite_avatars(category: String) -> Result<String, String> {
 }
 
 #[command]
+pub async fn get_uploaded_avatars() -> Result<String, String> {
+    let client = Client::new();
+    
+    let headers = build_headers();
+    let url = "https://vrchat.com/api/1/avatars?releaseStatus=all&organization=vrchat&sort=updated&order=descending&user=me&n=101";
+    let response = client.get(url)
+        .headers(headers)
+        .send()
+        .await
+        .map_err(|err| err.to_string())?;
+
+    let body = response.text().await.unwrap_or_else(|_| String::from(""));
+    Ok(body)
+}
+
+#[command]
 pub async fn get_current_avatar(user_id: String) -> Result<String, String> {
     let client = Client::new();
     

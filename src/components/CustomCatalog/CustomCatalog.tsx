@@ -10,6 +10,7 @@ const CustomCatalog = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [filteredAvatars, setFilteredAvatars] = useState<Avatar[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('');
 
 
   useEffect(() => {
@@ -21,7 +22,8 @@ const CustomCatalog = () => {
   const getAllCustomAvatars = async () => {
     try {
       const items: Avatar[] = await invoke('get_all_avatars_cmd');
-      setAvatars(items)
+      const reversedItems = items.reverse();
+      setAvatars(reversedItems)
     } catch (error) {
       console.error('Failed to get items:', error);
     }
@@ -71,6 +73,10 @@ const CustomCatalog = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <select name="Sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="recent">Recently Used</option>
+            <option value="added">Date Added</option>
+          </select>
       </div>
       <div className="catalog-container">
         {filteredAvatars.map(avatar => (

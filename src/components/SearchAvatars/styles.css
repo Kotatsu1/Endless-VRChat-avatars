@@ -10,6 +10,10 @@
   margin-left: 15px;
 }
 
+.avatar-title {
+  height: 50px;
+}
+
 .avatar-block {
   border: 2px solid #EA4C89;
   border-radius: 8px;
@@ -22,6 +26,7 @@
 .avatar-block p {
   background-color: #EA4C89;
   color: white;
+  word-wrap: break-word;
 }
 
 .avatar-block img {

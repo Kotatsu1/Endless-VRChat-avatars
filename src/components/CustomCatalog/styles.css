@@ -43,3 +43,8 @@
 .dummy {
   opacity: 0;;
 }
+
+.input-container {
+  display: flex;
+  gap: 30px;
+}

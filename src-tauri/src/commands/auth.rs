@@ -72,7 +72,7 @@ pub async fn login(auth_string: String) -> Result<(String, Vec<String>), String>
 }
 
 #[command]
-pub async fn verify_two_factor(code: String, auth_cookie: String) -> Result<Vec<String>, String> {
+pub async fn verify_two_factor(code: String, auth_cookie: String, method: String) -> Result<Vec<String>, String> {
     let client = Client::new();
 
     let mut headers = HeaderMap::new();
@@ -84,7 +84,7 @@ pub async fn verify_two_factor(code: String, auth_cookie: String) -> Result<Vec<
         "code": code
     });
 
-    let response = client.post("https://vrchat.com/api/1/auth/twofactorauth/emailotp/verify")
+    let response = client.post(format!("https://vrchat.com/api/1/auth/twofactorauth/{}/verify", method))
         .headers(headers)
         .json(&body)
         .send()

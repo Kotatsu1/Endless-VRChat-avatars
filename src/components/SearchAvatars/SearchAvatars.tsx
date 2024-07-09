@@ -2,6 +2,8 @@ import "./styles.css"
 import type { SearchAvatar } from "@/types"
 import { invoke } from "@tauri-apps/api/tauri";
 import { useEffect, useState } from 'react';
+import React from "react";
+import unavailableAvatar  from "@/assets/unavailable-avatar.png"
 
 
 const SearchAvatars = () => {
@@ -11,7 +13,7 @@ const SearchAvatars = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const searchByTitle = async (page: number, event: any = null) => {
+  const searchByTitle = async (page: number, event: React.FormEvent | null = null) => {
     if (!searchQuery) return
     setLoading(true);
     setAvatars([]);
@@ -21,6 +23,7 @@ const SearchAvatars = () => {
 
     setPage(page);
     const avatars: string = await invoke("search_avatars", { searchQuery });
+
     const splittedAvatars = avatars.split("\n");
 
     const pageSize = 30
@@ -88,8 +91,15 @@ const SearchAvatars = () => {
             key={avatar.avtr} 
             className="avatar-block"
           >
-            <p>{avatar.title}</p>
-            <img src={avatar.thumbnailUrl} />
+            <p className="avatar-title">{avatar.title}</p>
+            <img 
+              src={avatar.thumbnailUrl ? avatar.thumbnailUrl : unavailableAvatar} 
+              alt="Avatar" 
+              onError={(e) => {
+                e.currentTarget.src = unavailableAvatar;
+                e.currentTarget.onerror = null;
+              }}
+            />
             <div className="avatar-buttons">
               <button className="btn avatar-btn" onClick={() => changeAvatar(avatar.avtr)}>
                 Select
@@ -111,7 +121,7 @@ const SearchAvatars = () => {
         <div className="dummy avatar-block"></div>
         <div className="dummy avatar-block"></div>
       </div>
-      {avatars.length > 1 &&
+      {avatars[0]?.avtr &&
         <div className="pagination">
           <button className="btn" onClick={() => setPage(page - 1)}>
             Prev

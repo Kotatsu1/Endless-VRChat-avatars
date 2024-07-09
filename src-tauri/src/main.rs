@@ -17,6 +17,7 @@ fn main() {
             commands::avatar::change_avatar,
             commands::avatar::get_favorite_avatars,
             commands::avatar::get_current_avatar,
+            commands::avatar::get_uploaded_avatars,
             commands::avatar::get_avatar_info,
             commands::avatar::search_avatars,
             commands::avatar::add_avatar_cmd,
