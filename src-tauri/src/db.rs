@@ -1,7 +1,6 @@
 use rusqlite::{params, Connection, Result, Error as RusqliteError};
 use serde::Serialize;
 use tauri::command;
-use tauri::Window;
 use std::fs;
 use dirs::cache_dir;
 
@@ -57,8 +56,8 @@ fn get_connection() -> Result<Connection, RusqliteError> {
     Connection::open(dir_path)
 }
 
-
-fn update_auth_cookie(conn: &Connection, auth_cookie: &str) -> Result<()> {
+pub fn update_auth_cookie(auth_cookie: &str) -> Result<()> {
+    let conn = get_connection()?;
     conn.execute(
         "INSERT OR REPLACE INTO auth_cookie (id, auth_cookie) VALUES (1, ?1)",
         params![auth_cookie],
@@ -66,7 +65,8 @@ fn update_auth_cookie(conn: &Connection, auth_cookie: &str) -> Result<()> {
     Ok(())
 }
 
-fn get_auth_cookie(conn: &Connection) -> Result<Option<String>> {
+pub fn get_auth_cookie() -> Result<Option<String>> {
+    let conn = get_connection()?;
     let mut stmt = conn.prepare("SELECT auth_cookie FROM auth_cookie WHERE id = 1")?;
     let mut rows = stmt.query([])?;
 
@@ -77,7 +77,8 @@ fn get_auth_cookie(conn: &Connection) -> Result<Option<String>> {
     }
 }
 
-fn add_avatar(conn: &Connection, avtr: &str, title: &str, thumbnailUrl: &str) -> Result<()> {
+pub fn add_avatar(avtr: &str, title: &str, thumbnailUrl: &str) -> Result<()> {
+    let conn = get_connection()?;
     conn.execute(
         "INSERT INTO avatars (avtr, title, thumbnailUrl) VALUES (?1, ?2, ?3)",
         params![avtr, title, thumbnailUrl],
@@ -85,7 +86,8 @@ fn add_avatar(conn: &Connection, avtr: &str, title: &str, thumbnailUrl: &str) ->
     Ok(())
 }
 
-fn remove_avatar(conn: &Connection, avtr: &str) -> Result<()> {
+pub fn remove_avatar(avtr: &str) -> Result<()> {
+    let conn = get_connection()?;
     conn.execute(
         "DELETE FROM avatars WHERE avtr = ?1",
         params![avtr],
@@ -93,7 +95,8 @@ fn remove_avatar(conn: &Connection, avtr: &str) -> Result<()> {
     Ok(())
 }
 
-fn get_all_avatars(conn: &Connection) -> Result<Vec<Avatar>> {
+pub fn get_all_avatars() -> Result<Vec<Avatar>> {
+    let conn = get_connection()?;
     let mut stmt = conn.prepare("SELECT id, avtr, title, thumbnailUrl FROM avatars")?;
     let avatar_iter = stmt.query_map([], |row| {
         Ok(Avatar {
@@ -111,34 +114,4 @@ fn get_all_avatars(conn: &Connection) -> Result<Vec<Avatar>> {
     Ok(avatars)
 }
 
-#[command]
-pub fn add_avatar_cmd(window: Window, avtr: String, title: String, thumbnailUrl: String) -> Result<(), String> {
-    window.emit("catalog_changed", "Avatar added successfully").unwrap();
-    let conn = get_connection().map_err(|e| e.to_string())?;
-    add_avatar(&conn, &avtr, &title, &thumbnailUrl).map_err(|e| e.to_string())
-}
 
-#[command]
-pub fn remove_avatar_cmd(window: Window, avtr: String) -> Result<(), String> {
-    window.emit("catalog_changed", "Avatar removed successfully").unwrap();
-    let conn = get_connection().map_err(|e| e.to_string())?;
-    remove_avatar(&conn, &avtr).map_err(|e| e.to_string())
-}
-
-#[command]
-pub fn get_all_avatars_cmd() -> Result<Vec<Avatar>, String> {
-    let conn = get_connection().map_err(|e| e.to_string())?;
-    get_all_avatars(&conn).map_err(|e| e.to_string())
-}
-
-#[command]
-pub fn update_auth_cookie_cmd(auth_cookie: String) -> Result<(), String> {
-    let conn = get_connection().map_err(|e| e.to_string())?;
-    update_auth_cookie(&conn, &auth_cookie).map_err(|e| e.to_string())
-}
-
-#[command]
-pub fn get_auth_cookie_cmd() -> Result<Option<String>, String> {
-    let conn = get_connection().map_err(|e| e.to_string())?;
-    get_auth_cookie(&conn).map_err(|e| e.to_string())
-}
