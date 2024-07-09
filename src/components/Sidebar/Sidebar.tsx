@@ -18,7 +18,6 @@ const Sidebar = () => {
 
 
   const getAvatarInfo = async (userId: string) => {
-    console.log("HERE", userId)
     const rawAvatarInfo: string = await invoke("get_current_avatar", { userId });
     const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 

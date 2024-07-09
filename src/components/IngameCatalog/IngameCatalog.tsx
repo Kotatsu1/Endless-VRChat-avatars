@@ -16,9 +16,11 @@ const IngameCatalog = () => {
     ));
   }, [avatars, searchQuery]);
 
-  const getFavoriteAvatars = async () => {
-    const avatars: string = await invoke("get_favorite_avatars")
+  const getFavoriteAvatars = async (category: string) => {
+    const avatars: string = await invoke("get_favorite_avatars", { category: category })
     const parsedAvatars: SiteAvatar[] = JSON.parse(avatars)
+
+    console.log(parsedAvatars)
     setAvatars(parsedAvatars)
   }
 
@@ -28,17 +30,31 @@ const IngameCatalog = () => {
   };
 
   const addToCustomAvatars = async (avtr: string, title: string, thumbnailUrl: string) => {
+    const existsingAvatar = await invoke('get_existing_avatar_cmd', { avtr })
+
+    if (existsingAvatar) {
+      console.log('Avatar already exists');
+      return;
+    }
     const res = await invoke("add_avatar_cmd", { avtr, title, thumbnailUrl });
     console.log("avtr to custom", res)
   };
 
   useEffect(() => {
-    getFavoriteAvatars();
+    getFavoriteAvatars("avatars1");
   }, [])
 
   return (
     <>
       <h1 className="catalog-title">In Game Catalog</h1>
+      <div className="favorites-category-container">
+        <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars1")}>1</div>
+        <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars2")}>2</div>
+        <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars3")}>3</div>
+        <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars4")}>4</div>
+        <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars5")}>5</div>
+        <div className="favorites-category" onClick={() => getFavoriteAvatars("avatars6")}>6</div>
+      </div>
       <div className="input-container">
           <input
             className="search-query"

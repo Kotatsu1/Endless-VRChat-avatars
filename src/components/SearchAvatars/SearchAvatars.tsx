@@ -7,14 +7,25 @@ import { useEffect, useState } from 'react';
 const SearchAvatars = () => {
   const [avatars, setAvatars] = useState<SearchAvatar[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const searchByTitle = async (page: number) => {
+  const searchByTitle = async (page: number, event: any = null) => {
+    if (!searchQuery) return
+    setLoading(true);
+    setAvatars([]);
+    if (event) {
+      event.preventDefault()
+    }
+
     setPage(page);
     const avatars: string = await invoke("search_avatars", { searchQuery });
     const splittedAvatars = avatars.split("\n");
 
     const pageSize = 30
+    const totalPages = Math.ceil(splittedAvatars.length / pageSize);
+    setTotalPages(totalPages);
     
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -28,7 +39,7 @@ const SearchAvatars = () => {
       
       return { avtr, title, thumbnailUrl };
     }));
-    
+    setLoading(false);
     setAvatars(convertedToObjects);
   };
 
@@ -38,6 +49,12 @@ const SearchAvatars = () => {
   };
 
   const addToCustomAvatars = async (avtr: string, title: string, thumbnailUrl: string) => {
+    const existsingAvatar = await invoke('get_existing_avatar_cmd', { avtr })
+
+    if (existsingAvatar) {
+      console.log('Avatar already exists');
+      return;
+    }
     const res = await invoke("add_avatar_cmd", { avtr, title, thumbnailUrl });
     console.log("avtr to custom", res)
   };
@@ -50,6 +67,7 @@ const SearchAvatars = () => {
     <>
       <h1 className="catalog-title">Search Avatars</h1>
       <div className="input-container">
+        <form onSubmit={(e) => searchByTitle(1, e)}>
           <input
             className="search-query"
             type="text"
@@ -57,20 +75,14 @@ const SearchAvatars = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className="btn" onClick={() => searchByTitle(1)}>
+          <button className="btn" type="submit">
             Search
           </button>
-          <div className="pagination">
-            <button className="btn" onClick={() => setPage(page - 1)}>
-              Prev
-            </button>
-            <p className="page">Page {page}</p>
-            <button className="btn" onClick={() => setPage(page + 1)}>
-              Next
-            </button>
-          </div>
+        </form>
+          
         </div>
       <div className="catalog-container">
+        {loading && <div className="loader-spinner" />}
         {avatars.map(avatar => (
           <div 
             key={avatar.avtr} 
@@ -99,6 +111,23 @@ const SearchAvatars = () => {
         <div className="dummy avatar-block"></div>
         <div className="dummy avatar-block"></div>
       </div>
+      {avatars.length > 1 &&
+        <div className="pagination">
+          <button className="btn" onClick={() => setPage(page - 1)}>
+            Prev
+          </button>
+          <p className="page">Page {page} of {totalPages}</p>
+          <button 
+            className="btn" 
+            disabled={page === totalPages} 
+            style={page === totalPages ? { backgroundColor: 'gray' } : {}} 
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
+      }
+
     </>
   )
 }

@@ -1,7 +1,7 @@
 use reqwest::Client;
 use tauri::command;
 use super::cookie_headers::build_headers;
-use crate::db::{get_all_avatars, add_avatar, remove_avatar, Avatar};
+use crate::db::{get_all_avatars, get_existing_avatar, add_avatar, remove_avatar, Avatar};
 use tauri::Window;
 
 
@@ -20,6 +20,11 @@ pub fn remove_avatar_cmd(window: Window, avtr: String) -> Result<(), String> {
 #[command]
 pub fn get_all_avatars_cmd() -> Result<Vec<Avatar>, String> {
     get_all_avatars().map_err(|e| e.to_string())
+}
+
+#[command]
+pub fn get_existing_avatar_cmd(avtr: String) -> Result<Option<Avatar>, String> {
+    get_existing_avatar(&avtr).map_err(|e| e.to_string())
 }
 
 #[command]
@@ -46,11 +51,11 @@ pub async fn change_avatar(window: Window, avatar_id: String) -> Result<bool, St
 }
 
 #[command]
-pub async fn get_favorite_avatars() -> Result<String, String> {
+pub async fn get_favorite_avatars(category: String) -> Result<String, String> {
     let client = Client::new();
     
     let headers = build_headers();
-    let url = "https://vrchat.com/api/1/avatars/favorites";
+    let url = format!("https://vrchat.com/api/1/avatars/favorites?tag={}", category);
     let response = client.get(url)
         .headers(headers)
         .send()

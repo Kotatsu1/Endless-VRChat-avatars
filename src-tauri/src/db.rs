@@ -95,6 +95,24 @@ pub fn remove_avatar(avtr: &str) -> Result<()> {
     Ok(())
 }
 
+
+pub fn get_existing_avatar(avtr: &str) -> Result<Option<Avatar>> {
+    let conn = get_connection()?;
+    let mut stmt = conn.prepare("SELECT id, avtr, title, thumbnailUrl FROM avatars WHERE avtr = ?1")?;
+    let mut rows = stmt.query(params![avtr])?;
+
+    if let Some(row) = rows.next()? {
+        Ok(Some(Avatar {
+            id: row.get(0)?,
+            avtr: row.get(1)?,
+            title: row.get(2)?,
+            thumbnailUrl: row.get(3)?
+        }))
+    } else {
+        Ok(None)
+    }
+}
+
 pub fn get_all_avatars() -> Result<Vec<Avatar>> {
     let conn = get_connection()?;
     let mut stmt = conn.prepare("SELECT id, avtr, title, thumbnailUrl FROM avatars")?;

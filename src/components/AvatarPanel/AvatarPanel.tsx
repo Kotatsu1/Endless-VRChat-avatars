@@ -12,6 +12,13 @@ const AvatarPanel = () => {
 
   const addAvatar = async (avtr: string) => {
     try {
+      const existsingAvatar = await invoke('get_existing_avatar_cmd', { avtr })
+
+      if (existsingAvatar) {
+        console.log('Avatar already exists');
+        return;
+      }
+
       const rawAvatarInfo: string = await invoke('get_avatar_info', { avtr })
       const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 

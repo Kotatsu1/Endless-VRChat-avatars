@@ -21,7 +21,8 @@ fn main() {
             commands::avatar::search_avatars,
             commands::avatar::add_avatar_cmd,
             commands::avatar::remove_avatar_cmd,
-            commands::avatar::get_all_avatars_cmd
+            commands::avatar::get_all_avatars_cmd,
+            commands::avatar::get_existing_avatar_cmd
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

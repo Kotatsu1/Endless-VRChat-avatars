@@ -25,7 +25,7 @@ const Login = () => {
       const completeCookie = `${verify[0]}; ${authCookie}`
       if (completeCookie.length > 300) {
         await invoke("update_auth_cookie_cmd", { authCookie: completeCookie })
-        console.log(" >300")
+
         setAuthState()
         return
       }
