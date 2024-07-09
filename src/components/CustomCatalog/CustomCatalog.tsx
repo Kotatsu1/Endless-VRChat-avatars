@@ -8,6 +8,15 @@ import { listen } from '@tauri-apps/api/event'
 
 const CustomCatalog = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([]);
+  const [filteredAvatars, setFilteredAvatars] = useState<Avatar[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  useEffect(() => {
+    setFilteredAvatars(avatars.filter(avatar =>
+      avatar.title.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
+  }, [avatars, searchQuery]);
 
   const getAllCustomAvatars = async () => {
     try {
@@ -54,8 +63,17 @@ const CustomCatalog = () => {
     <>
       <AvatarPanel />
       <h1 className="catalog-title">Custom Catalog</h1>
+      <div className="input-container">
+          <input
+            className="search-query"
+            type="text"
+            placeholder="Avatar title"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+      </div>
       <div className="catalog-container">
-        {avatars.map(avatar => (
+        {filteredAvatars.map(avatar => (
           <div 
             key={avatar.id} 
             className="avatar-block"

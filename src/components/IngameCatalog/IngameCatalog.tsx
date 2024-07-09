@@ -6,6 +6,15 @@ import { useState, useEffect } from 'react';
 
 const IngameCatalog = () => {
   const [avatars, setAvatars] = useState<SiteAvatar[]>([]);
+  const [filteredAvatars, setFilteredAvatars] = useState<SiteAvatar[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  useEffect(() => {
+    setFilteredAvatars(avatars.filter(avatar =>
+      avatar.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
+  }, [avatars, searchQuery]);
 
   const getFavoriteAvatars = async () => {
     const avatars: string = await invoke("get_favorite_avatars")
@@ -30,8 +39,17 @@ const IngameCatalog = () => {
   return (
     <>
       <h1 className="catalog-title">In Game Catalog</h1>
+      <div className="input-container">
+          <input
+            className="search-query"
+            type="text"
+            placeholder="Avatar title"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+      </div>
       <div className="catalog-container">
-        {avatars.map(avatar => (
+        {filteredAvatars.map(avatar => (
           <div 
             key={avatar.id} 
             className="avatar-block"
