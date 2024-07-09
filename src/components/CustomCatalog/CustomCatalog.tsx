@@ -73,10 +73,10 @@ const CustomCatalog = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <select name="Sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          {/* <select name="Sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
             <option value="recent">Recently Used</option>
             <option value="added">Date Added</option>
-          </select>
+          </select> */}
       </div>
       <div className="catalog-container">
         {filteredAvatars.map(avatar => (
