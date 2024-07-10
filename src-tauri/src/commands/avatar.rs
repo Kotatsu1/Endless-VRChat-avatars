@@ -1,7 +1,7 @@
 use reqwest::Client;
 use tauri::command;
 use super::cookie_headers::build_headers;
-use crate::db::{get_all_avatars, get_existing_avatar, add_avatar, remove_avatar, Avatar};
+use crate::db::{get_all_avatars, get_existing_avatar, add_avatar, remove_avatar, update_avatar_last_used, Avatar};
 use tauri::Window;
 
 
@@ -10,6 +10,12 @@ pub fn add_avatar_cmd(window: Window, avtr: String, title: String, thumbnailUrl:
     window.emit("catalog_changed", "Avatar added successfully").unwrap();
     add_avatar(&avtr, &title, &thumbnailUrl).map_err(|e| e.to_string())
 }
+
+#[command]
+pub fn update_avatar_last_used_cmd(avtr: String) -> Result<(), String> {
+    update_avatar_last_used(&avtr).map_err(|e| e.to_string())
+}
+
 
 #[command]
 pub fn remove_avatar_cmd(window: Window, avtr: String) -> Result<(), String> {

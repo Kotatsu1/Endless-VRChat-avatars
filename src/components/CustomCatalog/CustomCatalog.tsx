@@ -10,19 +10,35 @@ const CustomCatalog = () => {
   const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [filteredAvatars, setFilteredAvatars] = useState<Avatar[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState('added');
 
 
   useEffect(() => {
-    setFilteredAvatars(avatars.filter(avatar =>
-      avatar.title.toLowerCase().includes(searchQuery.toLowerCase())
-    ));
-  }, [avatars, searchQuery]);
+    const sortedAvatars = [...avatars].sort((a, b) => {
+      if (sortBy === 'recent') {
+        return (
+          (b.lastUsed ? new Date(b.lastUsed).getTime() : 0) -
+          (a.lastUsed ? new Date(a.lastUsed).getTime() : 0)
+        );
+      } else if (sortBy === 'added') {
+        return b.id - a.id;
+      } else {
+        return 0;
+      }
+    });
+  
+    setFilteredAvatars(
+      sortedAvatars.filter(avatar =>
+        avatar.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [avatars, searchQuery, sortBy]);
 
   const getAllCustomAvatars = async () => {
     try {
       const items: Avatar[] = await invoke('get_all_avatars_cmd');
       const reversedItems = items.reverse();
+      console.log(reversedItems)
       setAvatars(reversedItems)
     } catch (error) {
       console.error('Failed to get items:', error);
@@ -38,7 +54,9 @@ const CustomCatalog = () => {
   }
 
   const changeAvatar = async (avatarId: string) => {
+    await invoke("update_avatar_last_used_cmd", { avtr: avatarId });
     const res = await invoke("change_avatar", { avatarId });
+    await getAllCustomAvatars();
     console.log("avtr change", res)
   };
 
@@ -73,10 +91,10 @@ const CustomCatalog = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          {/* <select name="Sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="recent">Recently Used</option>
+          <select className="sort-select" name="Sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
             <option value="added">Date Added</option>
-          </select> */}
+            <option value="recent">Recently Used</option>
+          </select>
       </div>
       <div className="catalog-container">
         {filteredAvatars.map(avatar => (

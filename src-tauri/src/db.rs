@@ -1,5 +1,6 @@
-use rusqlite::{params, Connection, Result, Error as RusqliteError};
+use rusqlite::{params, Connection, Result, Error};
 use serde::Serialize;
+use std::time::SystemTime;
 use tauri::command;
 use std::fs;
 use dirs::cache_dir;
@@ -11,6 +12,7 @@ pub struct Avatar {
     avtr: String,
     title: String,
     thumbnailUrl: String,
+    lastUsed: Option<String>
 }
 
 pub fn initialize_db() -> Result<()> {
@@ -20,7 +22,8 @@ pub fn initialize_db() -> Result<()> {
               id INTEGER PRIMARY KEY,
               avtr TEXT NOT NULL,
               title TEXT NOT NULL,
-              thumbnailUrl TEXT NOT NULL
+              thumbnailUrl TEXT NOT NULL,
+              lastUsed TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
           )",
         [],
     )?;
@@ -50,7 +53,7 @@ fn get_db_path() -> String {
 }
 
 
-fn get_connection() -> Result<Connection, RusqliteError> {
+fn get_connection() -> Result<Connection, Error> {
     let dir_path = get_db_path();
 
     Connection::open(dir_path)
@@ -80,8 +83,17 @@ pub fn get_auth_cookie() -> Result<Option<String>> {
 pub fn add_avatar(avtr: &str, title: &str, thumbnailUrl: &str) -> Result<()> {
     let conn = get_connection()?;
     conn.execute(
-        "INSERT INTO avatars (avtr, title, thumbnailUrl) VALUES (?1, ?2, ?3)",
+        "INSERT INTO avatars (avtr, title, thumbnailUrl, lastUsed) VALUES (?1, ?2, ?3, CURRENT_TIMESTAMP)",
         params![avtr, title, thumbnailUrl],
+    )?;
+    Ok(())
+}
+
+pub fn update_avatar_last_used(avtr: &str) -> Result<()> {
+    let conn = get_connection()?;
+    conn.execute(
+        "UPDATE avatars SET lastUsed = CURRENT_TIMESTAMP WHERE avtr = ?1",
+        params![avtr],
     )?;
     Ok(())
 }
@@ -106,7 +118,8 @@ pub fn get_existing_avatar(avtr: &str) -> Result<Option<Avatar>> {
             id: row.get(0)?,
             avtr: row.get(1)?,
             title: row.get(2)?,
-            thumbnailUrl: row.get(3)?
+            thumbnailUrl: row.get(3)?,
+            lastUsed: None
         }))
     } else {
         Ok(None)
@@ -115,13 +128,14 @@ pub fn get_existing_avatar(avtr: &str) -> Result<Option<Avatar>> {
 
 pub fn get_all_avatars() -> Result<Vec<Avatar>> {
     let conn = get_connection()?;
-    let mut stmt = conn.prepare("SELECT id, avtr, title, thumbnailUrl FROM avatars")?;
+    let mut stmt = conn.prepare("SELECT id, avtr, title, thumbnailUrl, lastUsed FROM avatars")?;
     let avatar_iter = stmt.query_map([], |row| {
         Ok(Avatar {
             id: row.get(0)?,
             avtr: row.get(1)?,
             title: row.get(2)?,
             thumbnailUrl: row.get(3)?,
+            lastUsed: row.get(4)?
         })
     })?;
 
@@ -131,5 +145,4 @@ pub fn get_all_avatars() -> Result<Vec<Avatar>> {
     }
     Ok(avatars)
 }
-
 

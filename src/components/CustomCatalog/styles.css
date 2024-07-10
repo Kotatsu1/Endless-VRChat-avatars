@@ -48,3 +48,11 @@
   display: flex;
   gap: 30px;
 }
+
+.sort-select {
+  color: white;
+}
+
+.sort-select option {
+  color: white;
+}

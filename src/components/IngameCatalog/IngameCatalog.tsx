@@ -31,6 +31,11 @@ const IngameCatalog = () => {
   }
 
   const changeAvatar = async (avatarId: string) => {
+    const existsingAvatar = await invoke('get_existing_avatar_cmd', { avtr: avatarId })
+
+    if (existsingAvatar) {
+      await invoke("update_avatar_last_used_cmd", { avtr: avatarId });
+    }
     const res = await invoke("change_avatar", { avatarId });
     console.log("avtr change", res)
   };

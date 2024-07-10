@@ -3,6 +3,7 @@ interface Avatar {
   avtr: string;
   title: string;
   thumbnailUrl: string;
+  lastUsed: Date | null;
 }
 
 interface SiteAvatar {
