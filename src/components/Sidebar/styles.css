@@ -47,3 +47,14 @@
 .linkto {
   background-color: inherit;
 }
+
+.new-release {
+  background-color: inherit;
+  position: fixed;
+  bottom: 20px;
+  display: block;
+}
+
+.new-release strong {
+  background-color: inherit;
+}

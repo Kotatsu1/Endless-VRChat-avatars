@@ -5,6 +5,25 @@ use super::cookie_headers::build_headers;
 use crate::db::{update_auth_cookie};
 
 
+
+#[command]
+pub async fn get_releases_info() -> Result<String, String> {
+    let client = Client::new();
+
+    let headers = build_headers();
+
+    let response = client.get("https://api.github.com/repos/Kotatsu1/Endless-VRChat-avatars/releases")
+        .headers(headers)
+        .send()
+        .await
+        .map_err(|err| err.to_string())?;
+
+    let body = response.text().await.unwrap_or_else(|_| String::from(""));
+    Ok(body)
+}
+
+
+
 #[command]
 pub fn update_auth_cookie_cmd(auth_cookie: String) -> Result<(), String> {
     update_auth_cookie(&auth_cookie).map_err(|e| e.to_string())

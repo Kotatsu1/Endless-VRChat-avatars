@@ -4,6 +4,7 @@ mod commands;
 mod db;
 
 
+
 fn main() {
     db::initialize_db().expect("Failed to initialize the database");
 
@@ -14,6 +15,7 @@ fn main() {
             commands::auth::get_user_info,
             commands::auth::verify_two_factor,
             commands::auth::update_auth_cookie_cmd,
+            commands::auth::get_releases_info,
             commands::avatar::change_avatar,
             commands::avatar::get_favorite_avatars,
             commands::avatar::get_current_avatar,

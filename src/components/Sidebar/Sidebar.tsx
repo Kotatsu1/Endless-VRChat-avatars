@@ -11,11 +11,10 @@ import { listen } from '@tauri-apps/api/event'
 const Sidebar = () => {
   const userInfo = useSelector((state: RootState) => state.user.info)
 
-
   const [avatarThumbnail, setAvatarThumbnail] = useState("");
   const [avatarTitle, setAvatarTitle] = useState("");
 
-
+  const [newRelease, setNewRelease] = useState("");
 
   const getAvatarInfo = async (userId: string) => {
     const rawAvatarInfo: string = await invoke("get_current_avatar", { userId });
@@ -25,7 +24,20 @@ const Sidebar = () => {
     setAvatarTitle(parsedAvatarInfo.name)
   }
 
+  const checkNewRelease = async () => {
+    const rawReleasesInfo: string = await invoke("get_releases_info");
+    const parsedReleasesInfo = JSON.parse(rawReleasesInfo);
+
+    const latestReleaseVersion = parsedReleasesInfo[0].tag_name;
+    const currentReleaseVersion = "0.0.6";
+
+    if (latestReleaseVersion !== currentReleaseVersion) {
+      setNewRelease(latestReleaseVersion);
+    }
+  }
+
   useEffect(() => {
+    checkNewRelease()
     getAvatarInfo(userInfo.id)
     const setupListener = async () => {
       const unlisten = await listen('avatar_changed', async (event) => {
@@ -62,6 +74,18 @@ const Sidebar = () => {
             <Link to="/support" className="linkto">Support</Link>
           </li>
         </ul>
+        {
+          newRelease ? 
+          <a 
+            href={`https://github.com/kotatsu1/Endless-VRChat-avatars/releases/tag/${newRelease}`} 
+            target="_blank" 
+            className="new-release"
+          >
+            <strong>New Release available</strong>
+          </a>
+           : 
+          <div className="new-release"><strong>Latest version</strong></div>
+        }
       </div>
     </>
   )

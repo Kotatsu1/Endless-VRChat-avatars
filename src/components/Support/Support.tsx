@@ -11,7 +11,6 @@ const Support = () => {
   <div className="donation-container">
       <h1 className="donation-title">Support</h1>
       <p className="donation-description"><strong>Thank you for considering a donation to support me!</strong></p>
-
       <p className="donation-description">BTC: {btcWalletAddress}</p>
       <p className="donation-description">USDT: {usdtAddress}</p>
       <p className="donation-description">Boosty: {boostyLink}</p>
