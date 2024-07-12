@@ -1,5 +1,6 @@
 import "./styles.css"
 import { invoke } from "@tauri-apps/api/tauri";
+import { emit } from '@tauri-apps/api/event'
 import { useState } from "react";
 
 import { RootState } from "@/redux"
@@ -38,6 +39,10 @@ const AvatarPanel = () => {
       const parsedAvatarInfo = JSON.parse(rawAvatarInfo);
 
       await addAvatar(parsedAvatarInfo.id)
+
+      emit('avatar_changed', {
+        theMessage: 'Avatar changed successfully!',
+      })
 
       console.log('Avatar added successfully');
     } catch (error) {

@@ -1,9 +1,12 @@
-Add sort for custom catalog
+Add module styles
 
-Exclude furry button
+Save catalog state when changing catalogs
+
+Show login errors
 
 Add categories or tags
 
 Current avatar update when changed in game
 
 CSS custimization
+

@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
+
+:root {
+  --background: #eb709f;
+  --text: #ffffff;
+}
+
+
+.preloader {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--background);
+  visibility: hidden;
+  animation: ShowBackground 3s cubic-bezier(.47,.23,0,1.77);
+
+  @keyframes ShowBackground {
+    from {
+      opacity: 1;
+      visibility: visible;
+    } 40% {
+      opacity: 1;
+    } 60% {
+      opacity: 1;
+    } 100% {
+      opacity: 0;
+      visibility: visible;
+    }
+  }
+
+  .title {
+    position: relative;
+    font-size: 6rem;
+    font-family: 'Caveat', cursive;
+    line-height: 1;
+    animation: ShowText 3s cubic-bezier(.47,.23,0,1.77);
+    background: var(--background);
+    color: var(--text);
+
+    @keyframes ShowText {
+      from {
+        opacity: 0;
+        transform: scale(.2);
+      } 50% {
+        transform: scale(1);
+      } 60% {
+        opacity: 1;
+        transform: scale(1);
+      } to {
+        opacity: 0;
+        transform: scale(0);
+      }
+    }
+  }
+
+  .circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0) scale(10);
+    width: 24rem;
+    height: 24rem;
+    border-radius: 50%;
+    background: #000;
+    animation: ShowCircle 3s ease;
+
+    @keyframes ShowCircle {
+      from {
+        transform: translate3d(-50%, -50%, 0) scale(0);
+        opacity: 0;
+      } 20% {
+        transform: translate3d(-50%, -50%, 0) scale(1.4);
+        opacity: 1;
+      } 60% {
+        transform: translate3d(-50%, -50%, 0) scale(1);
+      } to {
+        transform: translate3d(-50%, -50%, 0) scale(10);
+      }
+    }
+  }
+}

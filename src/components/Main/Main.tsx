@@ -1,5 +1,6 @@
 import "./styles.css";
 import { Sidebar } from ".."
+import { Preloader } from "../Preloader/Preloader";
 import { Outlet } from "react-router-dom";
 import { Login } from "../Login/Login"
 import { useEffect } from "react";
@@ -38,6 +39,7 @@ const Main = () => {
 
   return (
     <>
+      <Preloader />
       {authState ? 
         <div className="base">
           <Sidebar />

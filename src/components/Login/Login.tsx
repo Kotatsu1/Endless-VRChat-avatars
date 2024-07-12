@@ -3,7 +3,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { useState } from "react";
 import { encodeCredentials } from "@/utils/encoder" 
 import { useDispatch } from "react-redux"
-import { authActions } from "@/redux"
+import { authActions, userActions } from "@/redux"
 
 const Login = () => {
   const [login, setLogin] = useState("");
@@ -20,12 +20,21 @@ const Login = () => {
     dispatch(authActions.setAuth())
   }
 
+  const setUserInfo = async () => {
+    const rawUserInfo: string = await invoke("get_user_info")
+    const parsedUserInfo = JSON.parse(rawUserInfo)
+
+    dispatch(userActions.setUserInfo(parsedUserInfo))
+  }
+
   const handleLogin = async () => {
     if (twoFactorRequired) {
       const verify: string[] = await invoke("verify_two_factor", { code: twoFactorCode, authCookie, method: twoFactorMethod })
       const completeCookie = `${verify[0]}; ${authCookie}`
       if (completeCookie.length > 300) {
         await invoke("update_auth_cookie_cmd", { authCookie: completeCookie })
+
+        await setUserInfo()
 
         setAuthState()
         return
