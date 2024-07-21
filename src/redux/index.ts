@@ -9,3 +9,4 @@ export type RootState = ReturnType<typeof store.getState>
 
 export * from "./slices/authSlice"
 export * from "./slices/userSlice"
+export * from "./slices/searchSlice"

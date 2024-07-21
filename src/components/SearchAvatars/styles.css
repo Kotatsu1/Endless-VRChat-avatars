@@ -66,10 +66,15 @@
   justify-content: space-between;
   margin: 0 auto;
   left: 40%;
-  width: 500px;
+  width: 600px;
   padding: 5px;
   border: 1px solid black;
   border-radius: 8px;
+}
+
+.pagination .btn.active {
+  background-color: #ffa2c4;
+  color: white;
 }
 
 .pagination p {
