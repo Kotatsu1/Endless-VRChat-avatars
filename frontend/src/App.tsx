@@ -4,7 +4,6 @@ import { invoke } from "./api";
 
 export const App = () => {
   const [hello, setHello] = useState("");
-  const [bye, setBye] = useState("");
 
 
   const getHello = async () => {
@@ -12,11 +11,6 @@ export const App = () => {
     setHello(hello)
   }
 
-  const getBye = async () => {
-    const bye = await invoke("bye.say_bye", "kotatsu")
-
-    setBye(bye)
-  }
 
 
   return (
@@ -24,8 +18,6 @@ export const App = () => {
       <div>
         <button onClick={getHello}>get hello</button>
         {hello}
-        <button onClick={getBye}>get bye</button>
-        {bye}
       </div>
     </>
   )

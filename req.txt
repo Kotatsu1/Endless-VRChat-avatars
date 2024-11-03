@@ -1,2 +1,4 @@
+sqlalchemy[asyncio]
+aiosqlite
 pywebview
 pyinstaller
