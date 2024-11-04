@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { invoke } from "./api";
+import styles from "./styles/app.module.css"
+import classNames from 'classnames';
 
 
 export const App = () => {
@@ -15,9 +17,20 @@ export const App = () => {
 
   return (
     <>
-      <div>
-        <button onClick={getHello}>get hello</button>
-        {hello}
+      <div className={styles.background}>
+
+
+        <div className={classNames(styles.anyBlock, styles.sidebar)}>
+          <button onClick={getHello}>get hello {hello}</button>
+        </div>
+
+        <div className={classNames(styles.anyBlock, styles.container)}>
+          <div>
+            qweqweqe
+          </div>
+
+        </div>
+        
       </div>
     </>
   )

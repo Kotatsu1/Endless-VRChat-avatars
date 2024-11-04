@@ -15,8 +15,8 @@ if __name__ == "__main__":
 
     webview.create_window(
         'Endless VRChat Avatars',
-        # 'http://localhost:5173', 
-        'frontend/dist/index.html', 
+        'http://localhost:5173', 
+        # 'frontend/dist/index.html', 
         js_api=api,
         width=1280,
         height=800,
