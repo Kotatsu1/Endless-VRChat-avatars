@@ -1,37 +1,30 @@
-import { useState } from "react"
 import { invoke } from "./api";
-import styles from "./styles/app.module.css"
-import classNames from 'classnames';
+import { Preloader } from "./components/Preloader";
+//import styles from "./styles/app.module.css"
 
 
 export const App = () => {
-  const [hello, setHello] = useState("");
+  const minimize = async () => {
+    await invoke("minimize_window")
+  } 
 
+  const toggleMaximize = async () => {
+    await invoke("maximize_window")
+  } 
 
-  const getHello = async () => {
-    const hello = await invoke("say_hello", "kotatsu")
-    setHello(hello)
-  }
-
+  const close = async () => {
+    await invoke("close_window")
+  } 
 
 
   return (
     <>
-      <div className={styles.background}>
-
-
-        <div className={classNames(styles.anyBlock, styles.sidebar)}>
-          <button onClick={getHello}>get hello {hello}</button>
-        </div>
-
-        <div className={classNames(styles.anyBlock, styles.container)}>
-          <div>
-            qweqweqe
-          </div>
-
-        </div>
-        
+      <div className="pywebview-drag-region">
+        <button onClick={minimize}>min</button>
+        <button onClick={toggleMaximize}>max</button>
+        <button onClick={close}>close</button>
       </div>
+      <Preloader />
     </>
   )
 }

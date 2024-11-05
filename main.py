@@ -3,8 +3,26 @@ from database.connection import create_models
 
 
 class API:
+    def __init__(self):
+        self.maximized: bool = False
+
+
     def say_hello(self, name: str):
         return f'Hello, {name}!'
+
+    def close_window(self):
+        webview.active_window().destroy()
+
+    def minimize_window(self):
+        webview.active_window().minimize()
+
+    def maximize_window(self):
+        if self.maximized:
+            self.maximized = False
+            webview.active_window().restore()
+        else:
+            self.maximized = True
+            webview.active_window().maximize()
 
 
 
@@ -14,13 +32,22 @@ if __name__ == "__main__":
     api = API()
 
     webview.create_window(
-        'Endless VRChat Avatars',
-        'http://localhost:5173', 
-        # 'frontend/dist/index.html', 
+        'eva',
+        # 'http://localhost:5173', 
+        'frontend/dist/index.html', 
         js_api=api,
         width=1280,
         height=800,
-        min_size=(1280, 800)
+        min_size=(1280, 800),
+        frameless=True,
+        easy_drag=True
     )
 
-    webview.start()
+    webview.settings = {
+      # 'ALLOW_DOWNLOADS': True,
+      # 'ALLOW_FILE_URLS': True,
+      # 'OPEN_EXTERNAL_LINKS_IN_BROWSER': True,
+      'OPEN_DEVTOOLS_IN_DEBUG': False
+    }
+
+    webview.start(debug=True)
