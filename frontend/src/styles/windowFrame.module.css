@@ -1,0 +1,23 @@
+
+.title {
+  color: white;
+  padding: 5px;
+}
+
+.controls {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+}
+
+.minimize:hover {
+  background-color: orange;
+}
+
+.maximize:hover {
+  background-color: green;
+}
+
+.close:hover {
+  background-color: red;
+}

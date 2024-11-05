@@ -8,10 +8,11 @@
 }
 
 .pywebview-drag-region {
-  background-color: #b2a1df;
   height: 30px;
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   gap: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: rgba(178, 161, 223, 0.5);
+  backdrop-filter: blur(2px);
 }
-

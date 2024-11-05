@@ -1,31 +1,31 @@
-import { invoke } from "./api";
 import { Preloader } from "./components/Preloader";
-//import styles from "./styles/app.module.css"
+import { WindowFrame } from "./components/WindowFrame";
+import { useEffect, useState } from "react";
+import { invoke } from "./api";
+import { Main } from "./components/Main";
 
 
 export const App = () => {
-  const minimize = async () => {
-    await invoke("minimize_window")
-  } 
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const toggleMaximize = async () => {
-    await invoke("maximize_window")
-  } 
+  const timeConsuming = async () => {
+    const res = await invoke('time_consuming', 'qwe');
+    console.log(res);
+    if (res) {
+      setLoading(false);
+    }
+  };
 
-  const close = async () => {
-    await invoke("close_window")
-  } 
 
+  useEffect(() => {
+    timeConsuming()
+  }, []);
 
   return (
     <>
-      <div className="pywebview-drag-region">
-        <button onClick={minimize}>min</button>
-        <button onClick={toggleMaximize}>max</button>
-        <button onClick={close}>close</button>
-      </div>
-      <Preloader />
+      <WindowFrame />
+      {loading ? <Preloader /> : <Main />}
     </>
-  )
-}
+  );
+};
 

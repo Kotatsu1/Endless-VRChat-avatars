@@ -1,5 +1,6 @@
 import webview
 from database.connection import create_models
+import time
 
 
 class API:
@@ -7,14 +8,20 @@ class API:
         self.maximized: bool = False
 
 
-    def say_hello(self, name: str):
-        return f'Hello, {name}!'
+    def time_consuming(self, qwe):
+        time.sleep(3)
+        print('time consuming', qwe)
+
+        return f'Hello, World!'
+
 
     def close_window(self):
         webview.active_window().destroy()
 
+
     def minimize_window(self):
         webview.active_window().minimize()
+
 
     def maximize_window(self):
         if self.maximized:
@@ -33,20 +40,21 @@ if __name__ == "__main__":
 
     webview.create_window(
         'eva',
-        # 'http://localhost:5173', 
-        'frontend/dist/index.html', 
+        'http://localhost:5173', 
+        # 'frontend/dist/index.html', 
         js_api=api,
         width=1280,
         height=800,
         min_size=(1280, 800),
         frameless=True,
-        easy_drag=True
+        easy_drag=True,
+        resizable=True
     )
 
     webview.settings = {
-      # 'ALLOW_DOWNLOADS': True,
-      # 'ALLOW_FILE_URLS': True,
-      # 'OPEN_EXTERNAL_LINKS_IN_BROWSER': True,
+      'ALLOW_DOWNLOADS': True,
+      'ALLOW_FILE_URLS': True,
+      'OPEN_EXTERNAL_LINKS_IN_BROWSER': True,
       'OPEN_DEVTOOLS_IN_DEBUG': False
     }
 

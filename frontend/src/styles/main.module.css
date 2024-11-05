@@ -1,0 +1,9 @@
+
+.background {
+  width: 100vw;
+  height: calc(100vh - 30px);
+  background: linear-gradient(68.66deg, #6F7EA8 0%, #D8BFD1 24.5%, #AEB9D1 50%, #EBD4E5 74.5%, #C7D2E6 100%);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
