@@ -4,12 +4,21 @@ import { useEffect, useState } from "react";
 import { invoke } from "./api";
 import { Main } from "./components/Main";
 
+type SomeType = {
+  id: number,
+  title: string
+}
+
 
 export const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const timeConsuming = async () => {
-    const res = await invoke('time_consuming', 'qwe');
+    const payload: SomeType = {
+      id: 1,
+      title: "Kotatsu"
+    }
+    const res = await invoke('time_consuming', payload);
     console.log(res);
     if (res) {
       setLoading(false);
