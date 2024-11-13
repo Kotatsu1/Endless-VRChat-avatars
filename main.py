@@ -11,7 +11,6 @@ class API:
     def time_consuming(self, qwe):
         time.sleep(3)
         print('time consuming', qwe)
-        print(type(qwe))
 
         return f'Hello, World!'
 
