@@ -1,6 +1,6 @@
 import { Sidebar } from "../components/Sidebar";
 import styles from "../styles/main.module.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Endless } from "../components/Endless";
 import { Search } from "../components/Search";
 import { Official } from "../components/Official";
@@ -15,6 +15,10 @@ enum Catalog {
 export const Main = () => {
   const [catalog, setCatalog] = useState<Catalog>(Catalog.ENDLESS)
 
+
+  useEffect(() => {
+    setCatalog(Catalog.SEARCH)
+  }, [])
 
   return (
     <>

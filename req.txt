@@ -2,3 +2,4 @@ sqlalchemy[asyncio]
 aiosqlite
 pywebview
 pyinstaller
+PyGObject

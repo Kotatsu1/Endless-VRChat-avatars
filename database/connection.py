@@ -4,9 +4,20 @@ from contextlib import asynccontextmanager
 from .models import Base
 import asyncio
 import os
+from platform import system
+from utils import syncify
 
 
-directory = os.path.dirname(os.getenv('localappdata') + '/EVA/')
+operating_system = system()
+directory = ""
+
+if operating_system == "Linux":
+    directory = os.path.expanduser("~/.local/share/eva/")
+
+elif operating_system == "Windows":
+    directory = os.path.dirname(os.getenv('localappdata') + '/EVA/')
+
+
 os.makedirs(directory, exist_ok=True)
 DATABASE_URL = f"sqlite+aiosqlite:///{directory}/eva.db"
 
@@ -35,10 +46,8 @@ async def get_session():
         await session.close()
 
 
-async def async_create_models():
+@syncify
+async def create_models():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-
-def create_models():
-    asyncio.run(async_create_models())
