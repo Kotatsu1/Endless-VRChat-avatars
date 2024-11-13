@@ -50,7 +50,6 @@ if __name__ == "__main__":
         height=800,
         min_size=(1280, 800),
         frameless=True,
-        easy_drag=True,
         resizable=True
     )
 
