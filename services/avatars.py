@@ -1,22 +1,45 @@
+from .base_client import BaseClient
 import requests
 from utils import syncify
 from database.queries import database
 
 
-class Avatars:
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0"
-        self.__set_cookies()
-    
+class Avatars(BaseClient):
 
     @syncify
-    async def __get_cookies(self):
-        return await database.get_auth_cookie()
+    async def __get_cookies(self) -> dict | None:
+        raw_auth_cookies = await database.get_auth_cookie()
+
+        if not raw_auth_cookies:
+            return None
+            
+        auth_cookies = raw_auth_cookies.split(";")
+
+        cookies = {
+                "twoFactorAuth": auth_cookies[0],
+                "auth": auth_cookies[1]
+            }
+        
+        return cookies
 
 
-    def __set_cookies(self):
-        for cookie in self.__get_cookies():
-            # self.session.cookies.set('cookie_name', 'cookie_value')
-            print(cookie)
+    def get_favorite_avatars(self):
+        # "https://vrchat.com/api/1/avatars/favorites?tag={}"
+        ...
+
+    def get_uploaded_avatars(self):
+        cookies = self.__get_cookies()
+
+        if not cookies:
+            return None
+        
+        response = requests.get(
+            f"{self.base_api_url}/avatars?releaseStatus=all&organization=vrchat&sort=updated&order=descending&user=me&n=101",
+            headers={"User-Agent": self.user_agent},
+            cookies=self.__get_cookies()
+        )
+
+        return response.json()
+
+
 

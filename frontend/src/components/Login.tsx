@@ -5,7 +5,7 @@ import { invoke } from "../api";
 
 
 export const Login = () => {
-  const [login, setLogin] = useState("nikitakotatsu@gmail.com");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [authCookie, setAuthCookie] = useState("");
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
@@ -24,6 +24,7 @@ export const Login = () => {
       const completeCookie = `${verify}; ${authCookie}`
       if (completeCookie.length > 300) {
         await invoke("auth.set_two_factor_cookie", completeCookie)
+        location.reload()
 
         return
       }

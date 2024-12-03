@@ -9,6 +9,7 @@ class Database:
     def __init__(self):
         self.session = get_session
 
+
     async def update_auth_cookie(self, auth_cookie: str):
         async with self.session() as session:
             stmt = select(AuthCookie).where(AuthCookie.id == 1)
@@ -25,7 +26,7 @@ class Database:
                 await session.commit()
 
 
-    async def get_auth_cookie(self):
+    async def get_auth_cookie(self) -> str|None:
         async with self.session() as session:
             result = await session.execute(select(AuthCookie).where(AuthCookie.id == 1))
             auth_cookie = result.scalars().first()

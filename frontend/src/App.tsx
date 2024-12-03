@@ -5,36 +5,29 @@ import { invoke } from "./api";
 import { Main } from "./components/Main";
 import { Login } from "./components/Login";
 
-type SomeType = {
-  id: number,
-  title: string
-}
 
 
 export const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [authenticated, setAuthenticated] = useState(false)
 
-  const timeConsuming = async () => {
-    const payload: SomeType = {
-      id: 1,
-      title: "Kotatsu"
-    }
-    const res = await invoke('time_consuming', payload);
-    console.log(res);
-    if (res) {
-      setLoading(false);
-    }
+  const checkAuth = async () => {
+    const result = await invoke('auth.check_login');
+    console.log(result)
+
+    setAuthenticated(result)
+    setLoading(false);
   };
 
 
   useEffect(() => {
-    timeConsuming()
+    checkAuth()
   }, []);
 
   return (
     <>
       <WindowFrame />
-      {loading ? <Preloader /> : <Login />}
+      {loading ? <Preloader /> : authenticated ? <Main /> : <Login />}
     </>
   );
 };

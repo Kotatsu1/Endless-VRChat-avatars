@@ -7,6 +7,30 @@ import requests
 
 class Auth(BaseClient):
 
+    @syncify
+    async def check_login(self):
+        raw_auth_cookies = await database.get_auth_cookie()
+
+        if not raw_auth_cookies:
+            return
+            
+        auth_cookies = raw_auth_cookies.split(";")
+
+        response = requests.get(
+            f"{self.base_api_url}/auth/user",
+            headers={"User-Agent": self.user_agent},
+            cookies={
+                "twoFactorAuth": auth_cookies[0],
+                "auth": auth_cookies[1]
+            }
+        )
+
+        if response.status_code == 200:
+            return True
+
+        return False
+
+
     def login(self, auth_string: str):
         response = requests.get(
             url=f"{self.base_api_url}/auth/user",
@@ -42,7 +66,5 @@ class Auth(BaseClient):
 
 
     @syncify
-    async def set_two_factor_cookie(self, cookie: str):
+    async def set_two_factor_cookie(self, cookie):
         await database.update_auth_cookie(cookie)
-
-            

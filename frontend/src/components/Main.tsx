@@ -17,7 +17,7 @@ export const Main = () => {
 
 
   useEffect(() => {
-    setCatalog(Catalog.SEARCH)
+    setCatalog(Catalog.OFFICIAL)
   }, [])
 
   return (

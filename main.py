@@ -8,6 +8,7 @@ import services
 class API:
     navigation = services.Navigation()
     auth = services.Auth()
+    avatars = services.Avatars()
 
 
     @syncify
