@@ -3,6 +3,7 @@ import { WindowFrame } from "./components/WindowFrame";
 import { useEffect, useState } from "react";
 import { invoke } from "./api";
 import { Main } from "./components/Main";
+import { Login } from "./components/Login";
 
 type SomeType = {
   id: number,
@@ -33,7 +34,7 @@ export const App = () => {
   return (
     <>
       <WindowFrame />
-      {loading ? <Preloader /> : <Main />}
+      {loading ? <Preloader /> : <Login />}
     </>
   );
 };

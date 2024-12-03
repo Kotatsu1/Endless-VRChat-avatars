@@ -2,37 +2,22 @@ import webview
 from database.connection import create_models
 from utils import syncify
 import asyncio
-
+import services
 
 
 class API:
-    def __init__(self):
-        self.maximized: bool = False
+    navigation = services.Navigation()
+    auth = services.Auth()
 
 
     @syncify
     async def time_consuming(self, qwe):
-        await asyncio.sleep(3)
+        await asyncio.sleep(1)
         print('time consuming', qwe)
 
         return f'Hello, World!'
 
 
-    def close_window(self):
-        webview.active_window().destroy()
-
-
-    def minimize_window(self):
-        webview.active_window().minimize()
-
-
-    def maximize_window(self):
-        if self.maximized:
-            self.maximized = False
-            webview.active_window().restore()
-        else:
-            self.maximized = True
-            webview.active_window().maximize()
 
 
 
@@ -43,8 +28,8 @@ if __name__ == "__main__":
 
     webview.create_window(
         'eva',
-        # 'http://localhost:5173', 
-        'frontend/dist/index.html', 
+        'http://localhost:5173', 
+        # 'frontend/dist/index.html', 
         js_api=api,
         width=1280,
         height=800,

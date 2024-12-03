@@ -1,5 +1,6 @@
 import asyncio
 import functools
+from pydantic import ValidationError
 
 
 def syncify(func):
@@ -14,3 +15,18 @@ def syncify(func):
         return loop.run_until_complete(func(*args, **kwargs))
 
     return wrapper
+
+
+def pydantic_validate(model):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(self, obj):
+            try:
+                validated_model = model.model_validate(obj)
+            except ValidationError as e:
+                return {"error": str(e)}
+
+            result = func(self, validated_model)
+            return result
+        return wrapper
+    return decorator

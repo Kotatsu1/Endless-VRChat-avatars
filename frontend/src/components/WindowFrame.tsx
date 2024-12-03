@@ -7,15 +7,15 @@ import { MaximizeFrame } from "../assets/MaximizeFrame"
 
 export const WindowFrame = () => {
   const minimize = async () => {
-    await invoke("minimize_window")
+    await invoke("navigation.minimize_window")
   } 
 
   const toggleMaximize = async () => {
-    await invoke("maximize_window")
+    await invoke("navigation.maximize_window")
   } 
 
   const close = async () => {
-    await invoke("close_window")
+    await invoke("navigation.close_window")
   } 
 
   return (

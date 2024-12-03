@@ -3,3 +3,5 @@ aiosqlite
 pywebview
 pyinstaller
 PyGObject
+requests
+pydantic

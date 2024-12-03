@@ -1,3 +1,5 @@
+
+
 const checkApiReady = async (): Promise<boolean> => {
   if ((window as any).pywebview && (window as any).pywebview.api) {
     return true;
