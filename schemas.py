@@ -7,3 +7,7 @@ class TwoFactorVerify(BaseModel):
     tfa_method: str
 
 
+class Avatar(BaseModel):
+    avtr: str
+    title: str
+    thumbnail: str

@@ -1,7 +1,7 @@
 import { Sidebar } from "../components/Sidebar";
 import styles from "../styles/main.module.css"
 import { useState, useEffect } from "react";
-import { Endless } from "../components/Endless";
+import { Saved } from "../components/Saved";
 import { Search } from "../components/Search";
 import { Official } from "../components/Official";
 
@@ -9,23 +9,23 @@ import { Official } from "../components/Official";
 enum Catalog {
   OFFICIAL,
   SEARCH,
-  ENDLESS
+  SAVED
 }
 
 export const Main = () => {
-  const [catalog, setCatalog] = useState<Catalog>(Catalog.ENDLESS)
+  const [catalog, setCatalog] = useState<Catalog>(Catalog.SAVED)
 
 
   useEffect(() => {
-    setCatalog(Catalog.OFFICIAL)
+    setCatalog(Catalog.SEARCH)
   }, [])
 
   return (
     <>
       <div className={styles.background}>
         <Sidebar />
-        {catalog === Catalog.ENDLESS ? (
-          <Endless />
+        {catalog === Catalog.SAVED ? (
+          <Saved />
         ) : catalog === Catalog.OFFICIAL ? (
           <Official />
         ) : (

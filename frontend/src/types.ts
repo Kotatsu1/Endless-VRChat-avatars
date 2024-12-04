@@ -9,3 +9,8 @@ export type Avatar = {
   name: string
   thumbnailImageUrl: string
 }
+
+export type AvatarSearch = {
+  totalPages: number
+  avatars: Avatar[]
+}

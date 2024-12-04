@@ -5,3 +5,4 @@ pyinstaller
 PyGObject
 requests
 pydantic
+aiohttp

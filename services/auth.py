@@ -68,3 +68,5 @@ class Auth(BaseClient):
     @syncify
     async def set_two_factor_cookie(self, cookie):
         await database.update_auth_cookie(cookie)
+
+
