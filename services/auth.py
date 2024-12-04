@@ -8,7 +8,7 @@ import requests
 class Auth(BaseClient):
 
     @syncify
-    async def check_login(self):
+    async def get_user_info(self):
         raw_auth_cookies = await database.get_auth_cookie()
 
         if not raw_auth_cookies:
@@ -25,10 +25,12 @@ class Auth(BaseClient):
             }
         )
 
-        if response.status_code == 200:
-            return True
+        result = {
+            "auth": response.status_code == 200,
+            "userInfo": response.json()
+        }
 
-        return False
+        return result
 
 
     def login(self, auth_string: str):

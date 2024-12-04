@@ -108,4 +108,28 @@ class Avatars(BaseClient):
         await database.remove_avatar(avtr)
 
 
+    @syncify
+    async def update_last_used(self, avtr: str):
+        await database.update_avatar_last_used(avtr)
+
+
+    def get_current_avatar(self, user_id: str):
+        response = requests.get(
+            f"{self.base_api_url}/users/{user_id}/avatar",
+            headers={"User-Agent": self.user_agent},
+            cookies=self.cookies
+        )
+
+        return response.json()
+
+
+    @syncify
+    async def check_avatar_exists(self, avtr: str):
+        avatar = await database.get_existing_avatar(avtr)
+
+        if avatar:
+            return True
+
+        return False
+
 

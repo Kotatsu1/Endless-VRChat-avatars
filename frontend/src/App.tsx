@@ -12,10 +12,10 @@ export const App = () => {
   const [authenticated, setAuthenticated] = useState(false)
 
   const checkAuth = async () => {
-    const result = await invoke('auth.check_login');
-    console.log(result)
+    const result = await invoke('auth.get_user_info');
+    console.log('userInfo', result.userInfo)
 
-    setAuthenticated(result)
+    setAuthenticated(result.auth)
     setLoading(false);
   };
 

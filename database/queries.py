@@ -1,4 +1,4 @@
-from sqlalchemy import select, insert, update, delete
+from sqlalchemy import select, update, delete
 from sqlalchemy.future import select
 from datetime import datetime
 from .models import Avatar, AuthCookie
@@ -42,7 +42,9 @@ class Database:
 
     async def update_avatar_last_used(self, avtr: str):
         async with self.session() as session:
-            stmt = update(Avatar).where(Avatar.avtr == avtr).values(lastUsed=datetime.utcnow())
+            stmt = update(Avatar).where(Avatar.avtr == avtr).values(
+                lastUsed=datetime.now()
+            )
             await session.execute(stmt)
             await session.commit()
 
